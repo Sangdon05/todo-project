@@ -7,11 +7,14 @@ export class TodoService extends EventTarget {
     }
     super();
     this.database = database;
-    this.items = database.load() || [];
+    this.todos = database.load() || [];
   }
 
   // 할일 추가
   add(title, content) {
+    if (!title || !content) {
+      throw new Error("필수 값 누락입니다.")
+    }
     const data = {
       id: crypto.randomUUID(),
       title,
@@ -19,13 +22,13 @@ export class TodoService extends EventTarget {
       completed: false,
       createdAt: Date.now(),
     }
-    this.items.push(data);
+    this.todos.push(data);
     this.didUpdate();
     this.save();
   }
   // 할일 수정
   update(id, title = null, content = null) {
-    this.items = this.items.map((data) => {
+    this.todos = this.todos.map((data) => {
       if (data.id == id) {
         const newData = { ...data };
         title && (newData.title = title);
@@ -41,7 +44,7 @@ export class TodoService extends EventTarget {
   }
   // 할일 보관 처리 (소프트 삭제)
   archive(id) {
-    this.items = this.items.map((data) => {
+    this.todos = this.todos.map((data) => {
       if (data.id == id) {
         return { ...data, archivedAt: Date.now() };
       } else {
@@ -53,9 +56,9 @@ export class TodoService extends EventTarget {
   }
   // 물리적 완전 삭제
   delete(id) {
-    const index = this.items.findIndex((data) => data.id == id);
+    const index = this.todos.findIndex((data) => data.id == id);
     if (index != -1) {
-      this.items = this.items.filter((data) => data.id != id);
+      this.todos = this.todos.filter((data) => data.id != id);
       this.didUpdate();
       this.save();
     }
@@ -67,6 +70,6 @@ export class TodoService extends EventTarget {
   }
   // items 저장
   save() {
-    this.database.save(this.items);
+    this.database.save(this.todos);
   }
 }

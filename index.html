@@ -4,12 +4,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todo List</title>
-  <script type="module" src="./src/app.js"></script>
+  <title>오늘의 할일</title>
+  <script type="module" src="src/app.js"></script>
+  <link rel="stylesheet" href="./dist/styles/app.css">
 </head>
 
 <body>
-
+  <header>
+    <h1>오늘의 할일</h1>
+    <form name="formTodo">
+      제목: <input class="border-2" type="text" name="title">
+      내용: <input class="border-2" type="text" name="content">
+      <button id="add-todo">할일 추가</button>
+    </form>
+  </header>
+  <main>
+    <ul class="todo-list"></ul>
+    <div class="todo-list-empty">
+      할일 목록이 없습니다.
+    </div>
+  </main>
 </body>
 
 </html>
