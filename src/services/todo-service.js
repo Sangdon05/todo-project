@@ -10,6 +10,10 @@ export class TodoService extends EventTarget {
     this.todos = database.load() || [];
   }
 
+  searchWithID(id) {
+    return this.todos.filter((data) => data.id == id);
+  }
+
   // 할일 추가
   add(title, content) {
     if (!title || !content) {
@@ -28,15 +32,15 @@ export class TodoService extends EventTarget {
   }
   // 할일 수정
   update(id, title = null, content = null) {
-    this.todos = this.todos.map((data) => {
-      if (data.id == id) {
-        const newData = { ...data };
+    this.todos = this.todos.map((todo) => {
+      if (todo.id == id) {
+        const newData = { ...todo };
         title && (newData.title = title);
         content && (newData.content = content);
         newData.modifiedAt = Date.now();
         return newData;
       } else {
-        return data;
+        return todo;
       }
     });
     this.didUpdate();

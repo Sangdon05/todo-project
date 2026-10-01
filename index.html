@@ -9,21 +9,87 @@
   <link rel="stylesheet" href="./dist/styles/app.css">
 </head>
 
-<body>
-  <header>
-    <h1>오늘의 할일</h1>
-    <form name="formTodo">
-      제목: <input class="border-2" type="text" name="title">
-      내용: <input class="border-2" type="text" name="content">
-      <button id="add-todo">할일 추가</button>
-    </form>
-  </header>
-  <main>
-    <ul class="todo-list"></ul>
-    <div class="todo-list-empty">
-      할일 목록이 없습니다.
+<body class="h-screen bg-gray-50">
+  <main class="mx-auto max-w-xl px-4 py-10 h-full flex flex-col">
+    <header class="mx-auto max-w-xl shrink-0">
+      <h1 class="mb-6 text-2xl font-bold text-gray-900 w-full text-center">오늘의 할일</h1>
+      <form name="formTodo" class="space-y-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-200">
+        제목: <input
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:outline-none focus:ring-indigo-200"
+          type="text" name="title">
+        내용: <textarea rows="3"
+          class="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 focus:border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+          type="text" name="content"></textarea>
+        <button
+          class="w-full rounded-lg bg-indigo-600 px-4 py-2 font-medium text-white transition hover:bg-indigo-700 active:scale-[0.98]"
+          id="add-todo">할일 추가</button>
+      </form>
+    </header>
+
+    <ul class="todo-list mt-6 min-h-0 flex-1 space-y-3 overflow-y-auto"></ul>
+    <div
+      class="todo-list-empty mt-6 flex flex-1 flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 py-16 text-center text-gray-400">
+      <span class="text-4xl">📝</span>
+      <p class="mt-2 text-sm">할일 목록이 없습니다.</p>
     </div>
   </main>
+  <dialog id="confirm-modal"
+    class="fixed inset-0 m-auto backdrop:bg-black/50 backdrop:backdrop-blur-sm rounded-xl shadow-xl max-w-md w-full p-0 overflow-hidden bg-white open:flex open:flex-col animate-fade-in">
+    <div class="p-6">
+      <div class="flex items-start gap-4">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">정말 삭제하시겠습니까?</h3>
+          <p class="mt-2 text-sm text-gray-500">삭제된 데이터는 복구할 수 없으며, 연결된 모든 정보가 영구적으로 지워집니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+      <button
+        class="cancel px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+        취소
+      </button>
+      <button class="confirm px-4 py-2 bg-red-600 rounded-lg text-sm font-medium text-white hover:bg-red-700">
+        확인
+      </button>
+    </div>
+  </dialog>
+  <dialog id="edit-modal"
+    class="fixed inset-0 m-auto backdrop:bg-black/50 backdrop:backdrop-blur-sm rounded-xl shadow-xl max-w-md w-full p-0 overflow-hidden bg-white open:flex open:flex-col animate-fade-in">
+    <form method="dialog" id="edit-form" class="flex flex-col">
+
+      <div class="p-6">
+        <h3 class="text-lg font-semibold text-gray-900">할일 수정</h3>
+
+        <div class="mt-4 space-y-4">
+          <div>
+            <label for="edit-title" class="block text-sm font-medium text-gray-700">제목</label>
+            <input id="edit-title" name="title" type="text" required
+              class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200" />
+          </div>
+
+          <div>
+            <label for="edit-content" class="block text-sm font-medium text-gray-700">내용</label>
+            <textarea id="edit-content" name="content" rows="4"
+              class="mt-1 w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 하단 버튼 -->
+      <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+        <button type="button"
+          class="cancel px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+          취소
+        </button>
+        <button type="button"
+          class="save px-4 py-2 bg-indigo-600 rounded-lg text-sm font-medium text-white hover:bg-indigo-700">
+          저장
+        </button>
+      </div>
+
+    </form>
+  </dialog>
 </body>
 
 </html>
