@@ -5,10 +5,10 @@ import { htmlToElement } from './utils/create-html-element.js';
 const todoList = {
   service: new TodoService(new TodoLocalStorageService()),
   setup() {
-    todoList.service.addEventListener("didUpdate", function (e) {
-      todoList.refresh();
+    this.service.addEventListener("didUpdate", (e) => {
+      this.refresh();
     });
-    todoList.refresh();
+    this.refresh();
   },
   refresh() {
     const todos = this.service.todos;
@@ -39,9 +39,9 @@ const todoList = {
 
 const todoView = {
   setup() {
-    this.addTodoButton.addEventListener("click", function (e) {
+    this.addTodoButton.addEventListener("click", (e) => {
       e.preventDefault();
-      const form = todoView.todoFormView;
+      const form = this.todoFormView;
 
       const title = form.title.value;
       const content = form.content.value;
@@ -78,10 +78,10 @@ const todoView = {
       item.getElementsByClassName("title")[0].textContent = todo.title;
       item.getElementsByClassName("content")[0].textContent = todo.content;
       item.id = todo.id;
-      item.addEventListener("click", function (e) {
+      item.addEventListener("click", (e) => {
         if (e.target.classList.contains("delete")) {
           const id = e.currentTarget.id;
-          todoView.showComfirmModal(function () {
+          this.showComfirmModal(function () {
             // 삭제
             todoList.delete(id);
           });
@@ -89,7 +89,7 @@ const todoView = {
           const id = e.currentTarget.id;
           const selectedTodo = todoList.searchWithID(id);
           if (selectedTodo) {
-            todoView.showEditModal(todo, function (edited) {
+            this.showEditModal(todo, function (edited) {
               todoList.update(edited);
             });
           }
@@ -103,11 +103,11 @@ const todoView = {
   showComfirmModal(callback) {
     const confirmModal = this.confirmModal;
     confirmModal.showModal();
-    confirmModal.querySelector(".confirm").onclick = function () {
+    confirmModal.querySelector(".confirm").onclick = () => {
       callback();
       confirmModal.close();
     };
-    confirmModal.querySelector(".cancel").onclick = function () {
+    confirmModal.querySelector(".cancel").onclick = () => {
       confirmModal.close();
     };
   },
@@ -119,11 +119,11 @@ const todoView = {
     title.value = todo.title;
     content.value = todo.content;
     editModal.showModal();
-    editModal.querySelector(".cancel").onclick = function () {
+    editModal.querySelector(".cancel").onclick = () => {
       editModal.close();
     };
 
-    editModal.querySelector(".save").onclick = function () {
+    editModal.querySelector(".save").onclick = () => {
       if (title.value && content.value) {
         callback({ ...todo, title: title.value, content: content.value });
         editModal.close();
@@ -148,7 +148,7 @@ const todoView = {
 
       <div class="mt-4 flex justify-end gap-2 border-t border-gray-100 pt-3">
         <button class="edit rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 ring-1 ring-gray-200 transition hover:bg-gray-50" type="button">수정</button>
-        <button class="delete rounded-lg bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100">삭제</button>
+        <button class="delete rounded-lg text-white px-3 py-1.5 text-sm font-medium bg-red-600 transition hover:bg-red-700">삭제</button>
       </div>
     </li>
     `;
