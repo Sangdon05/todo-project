@@ -39,3 +39,8 @@ jest 설정 보다는 단순 기능 동작을 테스트하기 위한 것이며 �
 tests/
 
 네이밍 규칙 `단위.test.js`
+
+# 시연 영상
+
+https://github.com/user-attachments/assets/52b7e5b6-47d0-431b-9a23-2d11f7a8585d
+
